@@ -659,6 +659,31 @@ public class BibtexKeyPatternUtilTest {
                 BibtexKeyPatternUtil.getTitleWords(count, TITLE_STRING_CASED_FOUR_SMALL_WORDS_TWO_CONNECTED_WORDS));
     }
 
+    /**
+     * Tests [camel]
+     */
+    @Test
+    public void camel() {
+        // camel capitalises and concatenates all the words of the title
+        assertEquals("ApplicationMigrationEffortInTheCloudTheCaseOfCloudPlatforms",
+                BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_ALL_LOWER_FOUR_SMALL_WORDS_ONE_EN_DASH));
+        assertEquals("BPELConformanceInOpenSourceEnginesTheCaseOfStaticAnalysis",
+                BibtexKeyPatternUtil.getCamelizedTitle(
+                TITLE_STRING_ALL_LOWER_FIRST_WORD_IN_BRACKETS_TWO_SMALL_WORDS_SMALL_WORD_AFTER_COLON));
+        assertEquals("ProcessViewingPatterns", BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_CASED));
+        assertEquals("BPMNConformanceInOpenSourceEngines",
+                BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_CASED_ONE_UPPER_WORD_ONE_SMALL_WORD));
+        assertEquals("TheDifferenceBetweenGraphBasedAndBlockStructuredBusinessProcessModellingLanguages",
+                BibtexKeyPatternUtil.getCamelizedTitle(
+                TITLE_STRING_CASED_TWO_SMALL_WORDS_SMALL_WORD_AT_THE_BEGINNING));
+        assertEquals("CloudComputingTheNextRevolutionInIT",
+                BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_CASED_TWO_SMALL_WORDS_SMALL_WORD_AFTER_COLON));
+        assertEquals("TowardsChoreographyBasedProcessDistributionInTheCloud",
+                BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_CASED_TWO_SMALL_WORDS_ONE_CONNECTED_WORD));
+        assertEquals("OnTheMeasurementOfDesignTimeAdaptabilityForProcessBasedSystems",
+                BibtexKeyPatternUtil.getCamelizedTitle(TITLE_STRING_CASED_FOUR_SMALL_WORDS_TWO_CONNECTED_WORDS));
+    }
+
     @Test
     public void keywordNKeywordsSeparatedBySpace() {
         BibEntry entry = new BibEntry();

@@ -484,7 +484,7 @@ public class BibtexKeyPatternUtil {
                     Optional<Formatter> formatter = Formatters.getFormatterForModifier(modifier);
                     if (formatter.isPresent()) {
                         resultingLabel = formatter.get().format(label);
-                    } else if (!modifier.isEmpty() && modifier.length()>= 2 && (modifier.charAt(0) == '(') && modifier.endsWith(")")) {
+                    } else if (!modifier.isEmpty() && (modifier.length()>= 2) && (modifier.charAt(0) == '(') && modifier.endsWith(")")) {
                         // Alternate text modifier in parentheses. Should be inserted if
                         // the label is empty:
                         if (label.isEmpty() && (modifier.length() > 2)) {
@@ -640,6 +640,8 @@ public class BibtexKeyPatternUtil {
                                 Collections.singletonList("abbr"), 0));
             } else if ("veryshorttitle".equals(val)) {
                 return getTitleWords(1, entry.getField(FieldName.TITLE).orElse(""));
+            } else if ("camel".equals(val)) {
+                return getCamelizedTitle(entry.getField(FieldName.TITLE).orElse(""));
             } else if ("shortyear".equals(val)) {
                 String yearString = entry.getFieldOrAlias(FieldName.YEAR).orElse("");
                 if (yearString.isEmpty()) {
@@ -754,6 +756,47 @@ public class BibtexKeyPatternUtil {
             }
             stringBuilder.append(word);
             words++;
+        }
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Capitalises and concatenates the words out of the "title" field in the given BibTeX entry
+     */
+    public static String getCamelizedTitle(String title) {
+        return keepLettersAndDigitsOnly(getCamelizedTitleWithSpaces(title));
+    }
+
+    private static String getCamelizedTitleWithSpaces(String title) {
+        String ss = new RemoveLatexCommandsFormatter().format(title);
+        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder current;
+        int piv = 0;
+
+        // sorry for being English-centric. I guess these
+        // words should really be an editable preference.
+        while (piv < ss.length()) {
+            current = new StringBuilder();
+            // Get the next word:
+            while ((piv < ss.length()) && !Character.isWhitespace(ss.charAt(piv))
+                    && (ss.charAt(piv) != '-')) {
+                current.append(ss.charAt(piv));
+                piv++;
+            }
+            piv++;
+            // Check if it is ok:
+            String word = current.toString().trim();
+            if (word.isEmpty()) {
+                continue;
+            }
+            word = word.substring(0, 1).toUpperCase() + word.substring(1);
+
+            // If we get here, the word was accepted.
+            if (stringBuilder.length() > 0) {
+                stringBuilder.append(' ');
+            }
+            stringBuilder.append(word);
         }
 
         return stringBuilder.toString();

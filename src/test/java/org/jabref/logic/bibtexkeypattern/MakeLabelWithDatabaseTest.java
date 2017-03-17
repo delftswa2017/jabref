@@ -188,6 +188,173 @@ public class MakeLabelWithDatabaseTest {
     }
 
     @Test
+    public void generateKeyAuth() {
+        bibtexKeyPattern.setDefaultValue("[auth]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthors() {
+        bibtexKeyPattern.setDefaultValue("[authors]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeSmithWonder"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorLast() {
+        bibtexKeyPattern.setDefaultValue("[authorLast]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Wonder"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorsN() {
+        bibtexKeyPattern.setDefaultValue("[authors3]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeSmithWonder"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorsNEtAl() {
+        bibtexKeyPattern.setDefaultValue("[authors2]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeSmithEtAl"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorsAlphaOneAuthor() {
+        bibtexKeyPattern.setDefaultValue("[authorsAlpha]");
+        entry.setField("author", "Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Won"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorsAlphaFourAuthors() {
+        bibtexKeyPattern.setDefaultValue("[authorsAlpha]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DSWJ"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorsAlphaMoreThanFourAuthors() {
+        bibtexKeyPattern.setDefaultValue("[authorsAlpha]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DSW+"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorIni() {
+        bibtexKeyPattern.setDefaultValue("[authorIni]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeSW"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthDotauthea() {
+        bibtexKeyPattern.setDefaultValue("[auth.auth.ea]");
+        entry.setField("author", "John Doe and Donald Smith");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe.Smith"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthDotauthDoteaMany() {
+        bibtexKeyPattern.setDefaultValue("[auth.auth.ea]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe.Smith.ea"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthDotetal() {
+        bibtexKeyPattern.setDefaultValue("[auth.etal]");
+        entry.setField("author", "John Doe and Donald Smith");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe.Smith"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthDotetalMany() {
+        bibtexKeyPattern.setDefaultValue("[auth.etal]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe.etal"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthEtAl() {
+        bibtexKeyPattern.setDefaultValue("[authEtAl]");
+        entry.setField("author", "John Doe and Donald Smith");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeSmith"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthEtAlMany() {
+        bibtexKeyPattern.setDefaultValue("[authEtAl]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DoeEtAl"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthetalMany() {
+        bibtexKeyPattern.setDefaultValue("[auth.etal]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe.etal"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthshortOneAuthor() {
+        bibtexKeyPattern.setDefaultValue("[authshort]");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("Doe"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthshortThreeAuthors() {
+        bibtexKeyPattern.setDefaultValue("[authshort]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DSW"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthshortMany() {
+        bibtexKeyPattern.setDefaultValue("[authshort]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder and Mary Jane and Will Barrow");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("DSW+"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthForeIni() {
+        bibtexKeyPattern.setDefaultValue("[authForeIni]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("J"), entry.getCiteKeyOptional());
+    }
+
+    @Test
+    public void generateKeyAuthorLastForeIni() {
+        bibtexKeyPattern.setDefaultValue("[authorLastForeIni]");
+        entry.setField("author", "John Doe and Donald Smith and Will Wonder");
+        BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
+        assertEquals(Optional.of("W"), entry.getCiteKeyOptional());
+    }
+
+    @Test
     public void generateKeyTitle() {
         bibtexKeyPattern.setDefaultValue("[title]");
         BibtexKeyPatternUtil.makeAndSetLabel(bibtexKeyPattern, database, entry, preferences);
